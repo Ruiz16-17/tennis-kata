@@ -1,10 +1,11 @@
+import java.util.Objects;
 
 public class TennisGame1 implements TennisGame {
 
     private int player1Score = 0;
     private int player2Score = 0;
-    private String player1Name;
-    private String player2Name;
+    private final String player1Name;
+    private final String player2Name;
 
     public TennisGame1(String player1Name, String player2Name) {
         this.player1Name = player1Name;
@@ -13,10 +14,10 @@ public class TennisGame1 implements TennisGame {
 
     public void wonPoint(String playerName) {
 
-        if (playerName == this.player1Name) {
+        if (Objects.equals(playerName, this.player1Name)) {
             player1Score += 1;
         }
-        if (playerName == this.player2Name) {
+        if (Objects.equals(playerName, this.player2Name)) {
             player2Score += 1;
         }
 
@@ -26,64 +27,63 @@ public class TennisGame1 implements TennisGame {
 
         String score = "";
 
-        if(isEqualsScores()){
-            score = getEqualsLessThreeScoreString(this.player1Score);
+        if (isEqualsScores()) {
+            score = getStringEqualsScore(this.player1Score);
         }
 
-        if(isGreaterFourAndDifferrentsScoresCase()){
-            score = getScoreGreaterThreeString();
+        if (isGreaterFourAndDiffScoreCase()) {
+            score = getStringGreaterThreeScore();
         }
-        if (isLessFourAndDifferentsCase()){
+        if (isLessFourAndDiffScoreCase()) {
 
-            score = getScoreLessFourString(player1Score) + "-" + getScoreLessFourString(player2Score);
+            score = getStringLessFourScore(player1Score) + "-" + getStringLessFourScore(player2Score);
         }
 
         return score;
     }
 
-    private boolean isEqualsScores(){
+    //region General Comparisons
+
+    private boolean isEqualsScores() {
 
         return this.player1Score == this.player2Score;
     }
 
-    private boolean isGreaterFourScores(int score){
+    private boolean isGreaterFourScores(int score) {
 
         return score >= 4;
     }
 
-    private boolean isGreaterFourAndDifferrentsScoresCase(){
+    //endregion
 
-        return !isEqualsScores() && (isGreaterFourScores(player1Score) || isGreaterFourScores(player2Score));
+    //region cases
 
-    }
+    //region Equals Case
 
-    private boolean isLessFourAndDifferentsCase(){
-
-        return !isEqualsScores() && (!isGreaterFourScores(player1Score) && !isGreaterFourScores(player2Score));
-
-    }
-
-    private String getEqualsLessThreeScoreString(int tempScore) {
+    private String getStringEqualsScore(int score) {
 
         String scoreString = "Deuce";
 
-        if (tempScore < 3) {
+        if (score < 3) {
 
             String[] scoreStringArray = new String[]{"Love-All", "Fifteen-All", "Thirty-All"};
-            scoreString = scoreStringArray[tempScore];
+            scoreString = scoreStringArray[score];
         }
 
         return scoreString;
     }
 
-    private String getScoreLessFourString(int tempScore) {
+    //endregion
 
-        String[] scoreString = new String[]{"Love", "Fifteen", "Thirty", "Forty"};
+    //region Greater than four and differents Scores
 
-        return scoreString[tempScore];
+    private boolean isGreaterFourAndDiffScoreCase() {
+
+        return !isEqualsScores() && (isGreaterFourScores(player1Score) || isGreaterFourScores(player2Score));
+
     }
 
-    private String getScoreGreaterThreeString() {
+    private String getStringGreaterThreeScore() {
 
 
         return getTypeWinner(getDifferenceScore())
@@ -120,5 +120,26 @@ public class TennisGame1 implements TennisGame {
 
         return nameWinner;
     }
+
+    //endregion
+
+    //region Less than four and differents Scores
+
+    private boolean isLessFourAndDiffScoreCase() {
+
+        return !isEqualsScores() && (!isGreaterFourScores(player1Score) && !isGreaterFourScores(player2Score));
+
+    }
+
+    private String getStringLessFourScore(int score) {
+
+        String[] scoreString = new String[]{"Love", "Fifteen", "Thirty", "Forty"};
+
+        return scoreString[score];
+    }
+
+    //endregion
+
+    //endregion
 
 }
