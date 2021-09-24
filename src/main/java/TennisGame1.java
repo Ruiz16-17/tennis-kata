@@ -12,34 +12,55 @@ public class TennisGame1 implements TennisGame {
     }
 
     public void wonPoint(String playerName) {
+
         if (playerName == this.player1Name) {
             player1Score += 1;
         }
-
+        if (playerName == this.player2Name) {
             player2Score += 1;
+        }
 
     }
 
     public String getScore() {
+
         String score = "";
-        int tempScore = 0;
-        if (player1Score == player2Score) {
-            score = getEqualsLessThreeScoreString(player1Score);
-        } else if (player1Score >= 4 || player2Score >= 4) {
 
-            score = getScoreGreaterThreeString(player1Score,player2Score);
-
-        } else {
-            for (int i = 1; i < 3; i++) {
-                if (i == 1) tempScore = player1Score;
-                else {
-                    score += "-";
-                    tempScore = player2Score;
-                }
-                score += getScoreLessFourString(tempScore);
-            }
+        if(isEqualsScores()){
+            score = getEqualsLessThreeScoreString(this.player1Score);
         }
+
+        if(isGreaterFourAndDifferrentsScoresCase()){
+            score = getScoreGreaterThreeString();
+        }
+        if (isLessFourAndDifferentsCase()){
+
+            score = getScoreLessFourString(player1Score) + "-" + getScoreLessFourString(player2Score);
+        }
+
         return score;
+    }
+
+    private boolean isEqualsScores(){
+
+        return this.player1Score == this.player2Score;
+    }
+
+    private boolean isGreaterFourScores(int score){
+
+        return score >= 4;
+    }
+
+    private boolean isGreaterFourAndDifferrentsScoresCase(){
+
+        return !isEqualsScores() && (isGreaterFourScores(player1Score) || isGreaterFourScores(player2Score));
+
+    }
+
+    private boolean isLessFourAndDifferentsCase(){
+
+        return !isEqualsScores() && (!isGreaterFourScores(player1Score) && !isGreaterFourScores(player2Score));
+
     }
 
     private String getEqualsLessThreeScoreString(int tempScore) {
@@ -62,17 +83,17 @@ public class TennisGame1 implements TennisGame {
         return scoreString[tempScore];
     }
 
-    private String getScoreGreaterThreeString(int playerScore1, int playerScore2) {
+    private String getScoreGreaterThreeString() {
 
 
-        return getTypeWinner(getDifferenceScore(playerScore1,playerScore2))
+        return getTypeWinner(getDifferenceScore())
                 + " " +
-                getNameWinner(playerScore1,playerScore2);
+                getNameWinner();
     }
 
-    private int getDifferenceScore(int playerScore1, int playerScore2){
+    private int getDifferenceScore() {
 
-        return Math.abs(playerScore1 - playerScore2);
+        return Math.abs(this.player1Score - this.player2Score);
 
     }
 
@@ -80,7 +101,7 @@ public class TennisGame1 implements TennisGame {
 
         String typeWinner = "Win for";
 
-        if(differenceScore == 1){
+        if (differenceScore == 1) {
 
             typeWinner = "Advantage";
         }
@@ -88,17 +109,16 @@ public class TennisGame1 implements TennisGame {
         return typeWinner;
     }
 
-    private String getNameWinner(int playerScore1, int playerScore2) {
+    private String getNameWinner() {
 
         String nameWinner = this.player1Name;
 
-        if(playerScore1 < playerScore2){
+        if (this.player1Score < this.player2Score) {
 
             nameWinner = this.player2Name;
         }
 
         return nameWinner;
     }
-
 
 }
