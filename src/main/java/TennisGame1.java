@@ -7,6 +7,9 @@ public class TennisGame1 implements TennisGame {
     private final String player1Name;
     private final String player2Name;
 
+    private final String[] scoreStringEqualsArray = new String[]{"Love-All", "Fifteen-All", "Thirty-All"};
+    private final String[] scoreStringArray = new String[]{"Love", "Fifteen", "Thirty", "Forty"};
+
     public TennisGame1(String player1Name, String player2Name) {
         this.player1Name = player1Name;
         this.player2Name = player2Name;
@@ -15,10 +18,10 @@ public class TennisGame1 implements TennisGame {
     public void wonPoint(String playerName) {
 
         if (Objects.equals(playerName, this.player1Name)) {
-            player1Score += 1;
+            this.player1Score += 1;
         }
         if (Objects.equals(playerName, this.player2Name)) {
-            player2Score += 1;
+            this.player2Score += 1;
         }
 
     }
@@ -36,7 +39,7 @@ public class TennisGame1 implements TennisGame {
         }
         if (isLessFourAndDiffScoreCase()) {
 
-            score = getStringLessFourScore(player1Score) + "-" + getStringLessFourScore(player2Score);
+            score = scoreStringArray[this.player1Score] + "-" + scoreStringArray[this.player2Score];
         }
 
         return score;
@@ -66,8 +69,7 @@ public class TennisGame1 implements TennisGame {
 
         if (score < 3) {
 
-            String[] scoreStringArray = new String[]{"Love-All", "Fifteen-All", "Thirty-All"};
-            scoreString = scoreStringArray[score];
+            scoreString = this.scoreStringEqualsArray[score];
         }
 
         return scoreString;
@@ -79,7 +81,7 @@ public class TennisGame1 implements TennisGame {
 
     private boolean isGreaterFourAndDiffScoreCase() {
 
-        return !isEqualsScores() && (isGreaterFourScores(player1Score) || isGreaterFourScores(player2Score));
+        return !isEqualsScores() && (isGreaterFourScores(this.player1Score) || isGreaterFourScores(this.player2Score));
 
     }
 
@@ -127,15 +129,8 @@ public class TennisGame1 implements TennisGame {
 
     private boolean isLessFourAndDiffScoreCase() {
 
-        return !isEqualsScores() && (!isGreaterFourScores(player1Score) && !isGreaterFourScores(player2Score));
+        return !isEqualsScores() && (!isGreaterFourScores(this.player1Score) && !isGreaterFourScores(this.player2Score));
 
-    }
-
-    private String getStringLessFourScore(int score) {
-
-        String[] scoreString = new String[]{"Love", "Fifteen", "Thirty", "Forty"};
-
-        return scoreString[score];
     }
 
     //endregion

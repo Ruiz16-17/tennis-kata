@@ -15,6 +15,21 @@ public class TennisGame2 implements TennisGame {
         this.player2Name = player2Name;
     }
 
+    private void Player1IncrementScore() {
+        this.player1Points++;
+    }
+
+    private void Player2IncrementScore() {
+        this.player2Points++;
+    }
+
+    public void wonPoint(String player) {
+        if (Objects.equals(player, this.player1Name))
+            Player1IncrementScore();
+        else
+            Player2IncrementScore();
+    }
+
     public String getScore() {
         String score = "";
 
@@ -37,9 +52,9 @@ public class TennisGame2 implements TennisGame {
         return this.player1Points == this.player2Points;
     }
 
-    private boolean isLessThan(int limit) {
+    private boolean isLessThanFour() {
 
-        return this.player1Points < limit && this.player2Points < limit;
+        return this.player1Points < 4 && this.player2Points < 4;
     }
 
     private String getHighScorePlayerName() {
@@ -64,9 +79,9 @@ public class TennisGame2 implements TennisGame {
 
         String score = "Deuce";
 
-        if (player1Points < 3) {
+        if (this.player1Points < 3) {
 
-            score = scoreStringArrayEquals[this.player1Points];
+            score = this.scoreStringArrayEquals[this.player1Points];
 
         }
 
@@ -80,9 +95,9 @@ public class TennisGame2 implements TennisGame {
     private String getScoreLessOrGreaterFour(){
 
         String score = getTypeWinner();;
-        if(isLessThan(4)) {
+        if(isLessThanFour()) {
 
-            score = scoreStringArray[player1Points] + "-" + scoreStringArray[player2Points];
+            score = this.scoreStringArray[this.player1Points] + "-" + this.scoreStringArray[this.player2Points];
 
         }
 
@@ -111,18 +126,5 @@ public class TennisGame2 implements TennisGame {
 
     //endregion
 
-    private void Player1IncrementScore() {
-        player1Points++;
-    }
 
-    private void Player2IncrementScore() {
-        player2Points++;
-    }
-
-    public void wonPoint(String player) {
-        if (Objects.equals(player, this.player1Name))
-            Player1IncrementScore();
-        else
-            Player2IncrementScore();
-    }
 }
