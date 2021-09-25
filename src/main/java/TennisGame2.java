@@ -2,8 +2,8 @@ import java.util.Objects;
 
 public class TennisGame2 implements TennisGame {
 
-    public int player1Points = 0;
-    public int player2Points = 0;
+    private int player1Points = 0;
+    private int player2Points = 0;
 
     private final String[] scoreStringArrayEquals = new String[]{"Love-All", "Fifteen-All", "Thirty-All"};
     private final String[] scoreStringArray = new String[]{"Love", "Fifteen", "Thirty","Forty"};
@@ -22,26 +22,11 @@ public class TennisGame2 implements TennisGame {
             score = getStringScoreEqualsAndLessFour();
         }
 
-        if(isLessFourScores(4) && !isEqualsScores()) {
+        if(!isEqualsScores()){
 
-            score = scoreStringArray[player1Points] + "-" + scoreStringArray[player2Points];
-
+            score = getScoreLessOrGreaterFour();
         }
 
-        if (player1Points > player2Points && player2Points >= 3) {
-            score = "Advantage " + this.player1Name;
-        }
-
-        if (player2Points > player1Points && player1Points >= 3) {
-            score = "Advantage " + this.player2Name;
-        }
-
-        if (player1Points >= 4 && player2Points >= 0 && (player1Points - player2Points) >= 2) {
-            score = "Win for " + this.player1Name;
-        }
-        if (player2Points >= 4 && player1Points >= 0 && (player2Points - player1Points) >= 2) {
-            score = "Win for " + this.player2Name;
-        }
         return score;
     }
 
@@ -52,12 +37,28 @@ public class TennisGame2 implements TennisGame {
         return this.player1Points == this.player2Points;
     }
 
-    private boolean isLessFourScores(int limit) {
+    private boolean isLessThan(int limit) {
 
         return this.player1Points < limit && this.player2Points < limit;
     }
 
+    private String getHighScorePlayerName() {
+
+        String highScoreName = this.player1Name;
+
+        if(this.player1Points < this.player2Points){
+
+            highScoreName = this.player2Name;
+        }
+
+        return highScoreName;
+    }
+
     //endregion
+
+    //region Cases
+
+    //region Equals
 
     private String getStringScoreEqualsAndLessFour() {
 
@@ -72,18 +73,56 @@ public class TennisGame2 implements TennisGame {
         return score;
     }
 
-    private void P1Score() {
+    //endregion
+
+    //region Greater or Less than three
+
+    private String getScoreLessOrGreaterFour(){
+
+        String score = getTypeWinner();;
+        if(isLessThan(4)) {
+
+            score = scoreStringArray[player1Points] + "-" + scoreStringArray[player2Points];
+
+        }
+
+        return score;
+    }
+
+    private int getDifferenceScore() {
+
+        return Math.abs(this.player1Points - this.player2Points);
+
+    }
+
+    private String getTypeWinner() {
+
+        String typeWinner = "Win for";
+
+        if (getDifferenceScore() == 1) {
+
+            typeWinner = "Advantage";
+        }
+
+        return typeWinner + " " +getHighScorePlayerName();
+    }
+
+    //endregion
+
+    //endregion
+
+    private void Player1IncrementScore() {
         player1Points++;
     }
 
-    private void P2Score() {
+    private void Player2IncrementScore() {
         player2Points++;
     }
 
     public void wonPoint(String player) {
         if (Objects.equals(player, this.player1Name))
-            P1Score();
+            Player1IncrementScore();
         else
-            P2Score();
+            Player2IncrementScore();
     }
 }
